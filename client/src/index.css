@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/* =========================================
+   Design Tokens
+   ========================================= */
+@layer base {
+  :root {
+    /* Backgrounds */
+    --bg-primary: #2e2f3e;
+    --bg-secondary: #6c757d;
+    --bg-card: #3f404f;
+    --bg-pinned: #5c5d6a;
+
+    /* Text */
+    --text-primary: #e8e8ee;
+    --text-secondary: #b6b7c3;
+    --text-muted: #8e90a5;
+
+    /* Accents */
+    --accent-pink: #ff9acb;
+    --accent-pink-hover: #ffb3da;
+    --accent-yellow: #f2c94c;
+    --accent-red: #e5484d;
+
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-strong: rgba(255, 255, 255, 0.08);
+
+    /* Radius */
+    --radius-md: 12px;
+    --radius-lg: 14px;
+    --radius-xl: 16px;
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans;
+  }
+
+  /* Hide scrollbar while keeping scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, and Opera */
+  }
+}
