@@ -6,7 +6,6 @@ const InputBar: React.FC = () => {
     const [input, setInput] = React.useState("");
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
-        const formData = new FormData(event.target as HTMLFormElement);
         // Handle form submission logic here
         fetch('http://localhost:3000/messages/new', {
             method: 'POST',
@@ -20,7 +19,7 @@ const InputBar: React.FC = () => {
             }),
         })
             .then(response => response.json())
-            .then(data => {
+            .then(() => {
                 addMessage({ text: input, user: localStorage.getItem("userName") || "Anonymous", date: new Date() });
                 setInput("");
             })
