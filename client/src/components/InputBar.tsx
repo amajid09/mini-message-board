@@ -5,9 +5,10 @@ const InputBar: React.FC = () => {
     const { addMessage } = useData();
     const [input, setInput] = React.useState("");
     function handleSubmit(event: React.FormEvent) {
+        const url = import.meta.env.VITE_REACT_API_POST_MESSAGE || 'http://localhost:3000/messages/new';
         event.preventDefault();
         // Handle form submission logic here
-        fetch('http://localhost:3000/messages/new', {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import React from "react";
+import 'dotenv/config';
 
 type MessageType = {
     text: string;
@@ -20,8 +21,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMessages(prevMessages => [...prevMessages, message]);
     }
     const fetchData = async () => {
+        const apiUrl = import.meta.env.VITE_REACT_API_LIST_MESSAGES || 'http://localhost:3000/messages';
         try {
-            const response = await fetch('http://localhost:3000/messages');
+            const response = await fetch(apiUrl);
             const { data: resposneData } = await response.json();
             setMessages(resposneData);
         } catch (error) {
