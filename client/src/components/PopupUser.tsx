@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 
 interface PopupUserProps {
     isOpen: boolean;
@@ -9,12 +10,42 @@ interface PopupUserProps {
 const PopupUser: React.FC<PopupUserProps> = ({ isOpen, onClose }) => {
     const [username, setUsername] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const apiUrl = import.meta.env.VITE_REACT_API_CHECK_USER!;
+        const checkUser = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user: username.trim() }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const { data } = await response.json();
+                return data;
+            }
+            catch (error) {
+                toast.error('Error checking username. Please try again.');
+                return
+            }
+
+        }
+        const isExist = await checkUser();
+        if (isExist) {
+            toast.error('Username already exists. Please choose another one.');
+            return;
+        }
         if (username.trim()) {
             localStorage.setItem("userName", username.trim());
             setUsername("");
             onClose();
+            toast.success('Username is created successfully!');
         }
     };
 
