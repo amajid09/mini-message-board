@@ -5,7 +5,7 @@ const InputBar: React.FC = () => {
     const { addMessage } = useData();
     const [input, setInput] = React.useState("");
     function handleSubmit(event: React.FormEvent) {
-        const url = import.meta.env.VITE_REACT_API_POST_MESSAGE || 'http://localhost:3000/messages/new';
+        const url = import.meta.env.VITE_REACT_API_POST_MESSAGE!;
         event.preventDefault();
         // Handle form submission logic here
         fetch(url, {
@@ -19,7 +19,7 @@ const InputBar: React.FC = () => {
                 date: new Date()
             }),
         })
-            .then(response => response.json())
+            .then(response => response.ok ? response.json() : Promise.reject(new Error(`HTTP error! status: ${response.status}`)))
             .then(() => {
                 addMessage({ text: input, user: localStorage.getItem("userName") || "Anonymous", date: new Date() });
                 setInput("");
