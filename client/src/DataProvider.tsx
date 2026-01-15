@@ -9,6 +9,7 @@ type DataContextType = {
     messages: MessageType[];
     fetchData: () => Promise<void>;
     addMessage: (message: MessageType) => void;
+    removeMessage: (index: number) => void;
 }
 
 const DataContext = React.createContext({} as DataContextType);
@@ -18,6 +19,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const addMessage = (message: MessageType) => {
         setMessages(prevMessages => [...prevMessages, message]);
+    }
+    const removeMessage = (index: number) => {
+        setMessages(prevMessages => prevMessages.filter((_, i) => i !== index));
     }
     const fetchData = async () => {
         const apiUrl = import.meta.env.VITE_REACT_API_LIST_MESSAGES!;
@@ -34,7 +38,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }
     return (
-        <DataContext.Provider value={{ messages, fetchData, addMessage }}>
+        <DataContext.Provider value={{ messages, fetchData, addMessage, removeMessage }}>
             {children}
         </DataContext.Provider>
     )

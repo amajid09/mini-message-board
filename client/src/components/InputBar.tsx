@@ -2,32 +2,38 @@ import React from "react"
 import { useData } from "../DataProvider";
 
 const InputBar: React.FC = () => {
-    const { addMessage } = useData();
+    const { addMessage, removeMessage, messages } = useData();
     const [input, setInput] = React.useState("");
-    function handleSubmit(event: React.FormEvent) {
+    async function handleSubmit(event: React.FormEvent) {
         const url = import.meta.env.VITE_REACT_API_POST_MESSAGE!;
         event.preventDefault();
         // Handle form submission logic here
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                text: input,
-                user: localStorage.getItem("userName") || "Anonymous",
-                date: new Date()
-            }),
-        })
-            .then(response => response.ok ? response.json() : Promise.reject(new Error(`HTTP error! status: ${response.status}`)))
-            .then(() => {
-                addMessage({ text: input, user: localStorage.getItem("userName") || "Anonymous", date: new Date() });
-                setInput("");
+        addMessage({ text: input, user: localStorage.getItem("userName") || "Anonymous", date: new Date() });
+        setInput("");
+        try {
+            const fetchUrl = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: input,
+                    user: localStorage.getItem("userName") || "Anonymous",
+                    date: new Date()
+                }),
             })
-            .catch((error) => {
-                console.error('Error:', error);
+            if (!fetchUrl.ok) {
+                removeMessage(messages.length - 1); 
+                setInput(input); 
+                throw new Error(`HTTP error! status: ${fetchUrl.status}`);
+
             }
-            )
+            if (fetchUrl.ok) {
+                await fetchUrl.json()
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
     return (
         <form className="flex gap-2" onSubmit={handleSubmit}>
