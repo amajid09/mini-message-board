@@ -31,21 +31,21 @@ const PopupUser: React.FC<PopupUserProps> = ({ isOpen, onClose }) => {
                 return data;
             }
             catch (error) {
-                toast.error('Error checking username. Please try again.');
+                toast.error('Error checking username. Please try again.', { position: 'bottom-center' });
                 return
             }
 
         }
         const isExist = await checkUser();
         if (isExist) {
-            toast.error('Username already exists. Please choose another one.');
+            toast.error('Username already exists. Please choose another one.', { position: 'bottom-center' });
             return;
         }
         if (username.trim()) {
             localStorage.setItem("userName", username.trim());
             setUsername("");
             onClose();
-            toast.success('Username is created successfully!');
+            toast.success('Username is created successfully!', { position: 'bottom-center' });
         }
     };
 
