@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MessagesType } from './app/app.interface';
+import { MessagesType, UserDto } from './app/app.interface';
 import { UserError } from './app/app.error';
 
 @Injectable()
