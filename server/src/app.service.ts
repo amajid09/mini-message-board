@@ -21,9 +21,6 @@ export class AppService {
     return this.messages;
   }
   createMessage(message: Omit<MessagesType, 'added'>) {
-    if (this.isUserExist(message.user)) {
-      throw new UserError("User already exists");
-    }
     const newMessage: MessagesType = {
       ...message,
       added: new Date()
